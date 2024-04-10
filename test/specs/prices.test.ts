@@ -150,7 +150,7 @@ Deno.test("GET /api/prices/:randomId should return 404", async () => {
   asserts.assertEquals(response.status, 404, 'Expected status 404')
 })
 
-Deno.test("GET /api/prices/:id should message data json", async () => {
+Deno.test("GET /api/prices/:randomId should message data json 404 error", async () => {
   const id = randomString()
   const response = await GET(`/api/prices/${id}`)
   const body: IResponseErrorMessage = await response.json()
