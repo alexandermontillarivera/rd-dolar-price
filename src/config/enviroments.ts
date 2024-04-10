@@ -1,4 +1,5 @@
 import { dotenv } from "@dependencies"
+
 const env = await dotenv.load()
 
 export const enviroments = {
