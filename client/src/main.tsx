@@ -1,10 +1,11 @@
-import React from 'react'
+import 'normalize.css'
+import '@fontsource/raleway'
+import '@styles/main.css'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+const root = document.getElementById('root')!
+
+ReactDOM.createRoot(root).render(
+  <App />
 )
