@@ -1,41 +1,54 @@
-import { IResponseErrorMessage } from '@test-interfaces/API.d.ts'
-import { asserts } from '@test-dependencies'
-import { IResponsePrices, IPriceAPI, IResponsePrice } from '@test-interfaces/Product.d.ts'
-import { STORAGE } from '@test-constants'
-import { GET, parseStorageJSONItem, randomString } from '@test-utils'
+import { IResponseErrorMessage } from "@test-interfaces/API.d.ts"
+import { asserts } from "@test-dependencies"
+import {
+  IPriceAPI,
+  IResponsePrice,
+  IResponsePrices,
+} from "@test-interfaces/Product.d.ts"
+import { STORAGE } from "@test-constants"
+import { GET, parseStorageJSONItem, randomString } from "@test-utils"
 
 Deno.test("GET / should return 200", async () => {
   const response = await GET("/")
   const body = await response.json()
-  asserts.assertEquals(response.status, 200, 'Expected status 200')
-  asserts.assertEquals(body, { message: "Welcome to the API" }, 'Expected message')
+  asserts.assertEquals(response.status, 200, "Expected status 200")
+  asserts.assertEquals(
+    body,
+    { message: "Welcome to the API" },
+    "Expected message",
+  )
 })
-
 
 Deno.test("GET /api/prices should return 200", async () => {
   const response = await GET("/api/prices")
   await response.body?.cancel()
-  asserts.assertEquals(response.status, 200, 'Expected status 200')
+  asserts.assertEquals(response.status, 200, "Expected status 200")
 })
 
 Deno.test("GET /api/prices should a return json data", async () => {
   const response = await GET("/api/prices")
   const body = await response.json()
-  asserts.assertEquals(response.status, 200, 'Expected status 200')
+  asserts.assertEquals(response.status, 200, "Expected status 200")
 
   const havePrices = Object.hasOwn(body, "prices")
-  const haveReferenceExtractedPage = Object.hasOwn(body, "referenceExtractedPage")
+  const haveReferenceExtractedPage = Object.hasOwn(
+    body,
+    "referenceExtractedPage",
+  )
   const haveMessage = Object.hasOwn(body, "message")
 
-  asserts.assert(havePrices, 'Have a prices array key')
-  asserts.assert(haveReferenceExtractedPage, 'Have a referenceExtractedPage key')
-  asserts.assert(haveMessage, 'Have a message key')
+  asserts.assert(havePrices, "Have a prices array key")
+  asserts.assert(
+    haveReferenceExtractedPage,
+    "Have a referenceExtractedPage key",
+  )
+  asserts.assert(haveMessage, "Have a message key")
 })
 
 Deno.test("GET /api/prices should a format json data", async () => {
   const response = await GET("/api/prices")
   const body: IResponsePrices = await response.json()
-  asserts.assertEquals(response.status, 200, 'Expected status 200')
+  asserts.assertEquals(response.status, 200, "Expected status 200")
 
   const { prices, message, referenceExtractedPage } = body
 
@@ -48,30 +61,39 @@ Deno.test("GET /api/prices should a format json data", async () => {
     const haveId = Object.hasOwn(price, "id")
     const haveLogo = Object.hasOwn(price, "logo")
 
-    return haveEntity && haveBuyPrice && haveSellPrice && havePriceRise && havePriceRisePercentage && haveId && haveLogo
+    return haveEntity && haveBuyPrice && haveSellPrice && havePriceRise &&
+      havePriceRisePercentage && haveId && haveLogo
   })
 
   const isValidValuesPricesProperties = prices.every((price) => {
     const isEntityString = typeof price.entity === "string"
     const isBuyPriceNumber = typeof price.buy === "number"
     const isSellPriceNumber = typeof price.sell === "number"
-    const isPriceRiseBooleanOrNull = typeof price.priceRise === "boolean" || price.priceRise === null
-    const isPriceRisePercentageNumber = typeof price.priceRisePercentage === "number"
+    const isPriceRiseBooleanOrNull = typeof price.priceRise === "boolean" ||
+      price.priceRise === null
+    const isPriceRisePercentageNumber =
+      typeof price.priceRisePercentage === "number"
     const isIdString = typeof price.id === "string"
     const isLogoString = typeof price.logo === "string"
     const logoIsUrl = new URL(price.logo)
 
-    return isEntityString && isBuyPriceNumber && isSellPriceNumber && isPriceRiseBooleanOrNull && isPriceRisePercentageNumber && isIdString && isLogoString && logoIsUrl
+    return isEntityString && isBuyPriceNumber && isSellPriceNumber &&
+      isPriceRiseBooleanOrNull && isPriceRisePercentageNumber && isIdString &&
+      isLogoString && logoIsUrl
   })
 
-  const isReferenceExtractedPageString = typeof referenceExtractedPage === "string"
+  const isReferenceExtractedPageString =
+    typeof referenceExtractedPage === "string"
   const isMessageString = typeof message === "string"
 
-  asserts.assert(Array.isArray(prices), 'Prices is an array')
-  asserts.assert(isHaveAllPricesProperties, 'Prices have all properties')
-  asserts.assert(isValidValuesPricesProperties, 'Prices have valid values')
-  asserts.assert(isReferenceExtractedPageString, 'ReferenceExtractedPage is a string')
-  asserts.assert(isMessageString, 'Message is a string')
+  asserts.assert(Array.isArray(prices), "Prices is an array")
+  asserts.assert(isHaveAllPricesProperties, "Prices have all properties")
+  asserts.assert(isValidValuesPricesProperties, "Prices have valid values")
+  asserts.assert(
+    isReferenceExtractedPageString,
+    "ReferenceExtractedPage is a string",
+  )
+  asserts.assert(isMessageString, "Message is a string")
 
   const randomItem = prices[Math.floor(Math.random() * prices.length)]
 
@@ -82,15 +104,14 @@ Deno.test("GET /api/prices/:id should return 200", async () => {
   const item = parseStorageJSONItem<IPriceAPI>("ITEM_PRICE")
   const response = await GET(`/api/prices/${item.id}`)
   await response.body?.cancel()
-  asserts.assertEquals(response.status, 200, 'Expected status 200')
+  asserts.assertEquals(response.status, 200, "Expected status 200")
 })
-
 
 Deno.test("GET /api/prices/:id should a return json data", async () => {
   const item = parseStorageJSONItem<IPriceAPI>("ITEM_PRICE")
   const response = await GET(`/api/prices/${item.id}`)
   const body: IResponsePrice = await response.json()
-  asserts.assertEquals(response.status, 200, 'Expected status 200')
+  asserts.assertEquals(response.status, 200, "Expected status 200")
 
   const { price, message, referenceExtractedPage } = body
 
@@ -105,49 +126,55 @@ Deno.test("GET /api/prices/:id should a return json data", async () => {
   const isEntityString = typeof price.entity === "string"
   const isBuyPriceNumber = typeof price.buy === "number"
   const isSellPriceNumber = typeof price.sell === "number"
-  const isPriceRiseBooleanOrNull = typeof price.priceRise === "boolean" || price.priceRise === null
-  const isPriceRisePercentageNumber = typeof price.priceRisePercentage === "number"
+  const isPriceRiseBooleanOrNull = typeof price.priceRise === "boolean" ||
+    price.priceRise === null
+  const isPriceRisePercentageNumber =
+    typeof price.priceRisePercentage === "number"
   const isIdString = typeof price.id === "string"
   const isLogoString = typeof price.logo === "string"
   const logoIsUrl = new URL(price.logo)
 
-  const isReferenceExtractedPageString = typeof referenceExtractedPage === "string"
+  const isReferenceExtractedPageString =
+    typeof referenceExtractedPage === "string"
   const isMessageString = typeof message === "string"
 
-  asserts.assert(haveEntity, 'Have a entity key')
-  asserts.assert(haveBuyPrice, 'Have a buy key')
-  asserts.assert(haveSellPrice, 'Have a sell key')
-  asserts.assert(havePriceRise, 'Have a priceRise key')
-  asserts.assert(havePriceRisePercentage, 'Have a priceRisePercentage key')
-  asserts.assert(haveId, 'Have a id key')
-  asserts.assert(haveLogo, 'Have a logo key')
+  asserts.assert(haveEntity, "Have a entity key")
+  asserts.assert(haveBuyPrice, "Have a buy key")
+  asserts.assert(haveSellPrice, "Have a sell key")
+  asserts.assert(havePriceRise, "Have a priceRise key")
+  asserts.assert(havePriceRisePercentage, "Have a priceRisePercentage key")
+  asserts.assert(haveId, "Have a id key")
+  asserts.assert(haveLogo, "Have a logo key")
 
-  asserts.assert(isEntityString, 'Entity is a string')
-  asserts.assert(isBuyPriceNumber, 'Buy is a number')
-  asserts.assert(isSellPriceNumber, 'Sell is a number')
-  asserts.assert(isPriceRiseBooleanOrNull, 'PriceRise is a boolean or null')
-  asserts.assert(isPriceRisePercentageNumber, 'PriceRisePercentage is a number')
-  asserts.assert(isIdString, 'Id is a string')
-  asserts.assert(isLogoString, 'Logo is a string')
-  asserts.assert(logoIsUrl, 'Logo is a valid url')
+  asserts.assert(isEntityString, "Entity is a string")
+  asserts.assert(isBuyPriceNumber, "Buy is a number")
+  asserts.assert(isSellPriceNumber, "Sell is a number")
+  asserts.assert(isPriceRiseBooleanOrNull, "PriceRise is a boolean or null")
+  asserts.assert(isPriceRisePercentageNumber, "PriceRisePercentage is a number")
+  asserts.assert(isIdString, "Id is a string")
+  asserts.assert(isLogoString, "Logo is a string")
+  asserts.assert(logoIsUrl, "Logo is a valid url")
 
-  asserts.assert(isReferenceExtractedPageString, 'ReferenceExtractedPage is a string')
-  asserts.assert(isMessageString, 'Message is a string')
+  asserts.assert(
+    isReferenceExtractedPageString,
+    "ReferenceExtractedPage is a string",
+  )
+  asserts.assert(isMessageString, "Message is a string")
 })
 
 Deno.test("GET /api/prices/:id should a equal json data", async () => {
   const item = parseStorageJSONItem<IPriceAPI>("ITEM_PRICE")
   const response = await GET(`/api/prices/${item.id}`)
   const body: IResponsePrice = await response.json()
-  asserts.assertEquals(response.status, 200, 'Expected status 200')
-  asserts.assertEquals(body.price, item, 'Expected price')
+  asserts.assertEquals(response.status, 200, "Expected status 200")
+  asserts.assertEquals(body.price, item, "Expected price")
 })
 
 Deno.test("GET /api/prices/:randomId should return 404", async () => {
   const id = randomString()
   const response = await GET(`/api/prices/${id}`)
   await response.body?.cancel()
-  asserts.assertEquals(response.status, 404, 'Expected status 404')
+  asserts.assertEquals(response.status, 404, "Expected status 404")
 })
 
 Deno.test("GET /api/prices/:randomId should message data json 404 error", async () => {
@@ -155,7 +182,7 @@ Deno.test("GET /api/prices/:randomId should message data json 404 error", async 
   const response = await GET(`/api/prices/${id}`)
   const body: IResponseErrorMessage = await response.json()
   const haveAMessageKey = Object.hasOwn(body, "message")
-  asserts.assertEquals(response.status, 404, 'Expected status 404')
-  asserts.assert(haveAMessageKey, 'Have a message key')
-  asserts.assertEquals(body.message, "Entity not found", 'Expected message')
+  asserts.assertEquals(response.status, 404, "Expected status 404")
+  asserts.assert(haveAMessageKey, "Have a message key")
+  asserts.assertEquals(body.message, "Entity not found", "Expected message")
 })

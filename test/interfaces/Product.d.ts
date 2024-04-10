@@ -1,4 +1,4 @@
-import { IPrice } from '@interfaces/Product.d.ts'
+import { IPrice } from "@interfaces/Product.d.ts"
 
 export interface IPriceAPI extends IPrice {
   id: string
