@@ -21,7 +21,7 @@ export const getPrices = async () => {
         spreed,
       ] = cells
 
-      const entityFormatted = entity?.innerText.replace(/"\n"/g, "")
+      const entityFormatted = entity?.innerText.trim().replaceAll("\n", "")
       const priceBuyFormatted = Number(
         buy?.innerText.split("\n")[0].replace("$", ""),
       )
@@ -93,7 +93,7 @@ export const getPriceByEntity = async (entity: string) => {
           spreed,
         ] = cells
 
-        const entityFormatted = entity?.innerText.replace(/"\n"/g, "")
+        const entityFormatted = entity?.innerText.trim().replaceAll("\n", "")
         const priceBuyFormatted = Number(
           buy?.innerText.split("\n")[0].replace("$", ""),
         )
