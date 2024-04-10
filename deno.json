@@ -2,6 +2,7 @@
   "tasks": {
     "dev": "deno run -A --watch src/app.ts",
     "test": "deno test -A",
+    "test:watch": "deno test -A --watch",
     "start": "deno run -A src/app.ts"
   },
   "test": {
@@ -17,7 +18,9 @@
     "@constants": "./src/constants.ts",
     "@routes/": "./src/routes/",
     "@test-utils": "./test/utils/tools.ts",
-    "@test-dependencies": "./test/utils/deps.ts"
+    "@test-dependencies": "./test/utils/deps.ts",
+    "@test-interfaces/": "./test/interfaces/",
+    "@test-constants": "./test/utils/constants.ts"
   },
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "deno.ns"]
