@@ -16,7 +16,7 @@
     "@controllers/": "./src/controllers/",
     "@constants": "./src/constants.ts",
     "@routes/": "./src/routes/",
-    "@test-utils": "./test/tools.ts",
+    "@test-utils": "./test/utils/tools.ts",
     "@test-dependencies": "./test/utils/deps.ts"
   },
   "compilerOptions": {
