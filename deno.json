@@ -1,0 +1,26 @@
+{
+  "tasks": {
+    "dev": "deno run -A --watch src/app.ts"
+  },
+  "test": {
+    "include": ["test/**/*.test.ts"]
+  },
+  "imports": {
+    "@/": "./src/",
+    "@dependencies": "./src/deps.ts",
+    "@interfaces/": "./src/interfaces/",
+    "@config/": "./src/config/",
+    "@utilities/": "./src/utilities/",
+    "@controllers/": "./src/controllers/",
+    "@constants": "./src/constants.ts",
+    "@routes/": "./src/routes/",
+    "@test-utils/": "./test/",
+    "@test-dependencies": "./test/utils/deps.ts"
+  },
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "deno.ns"]
+  },
+  "fmt": {
+    "semiColons": false
+  }
+}
