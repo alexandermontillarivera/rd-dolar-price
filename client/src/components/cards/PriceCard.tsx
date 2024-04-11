@@ -1,6 +1,10 @@
 import styles from '@styles/components/cards/PriceCalendar.module.css'
-import { Badge } from '@components/elements/Badge'
-
+import { Button } from '../buttons/Button'
+import {
+  IconTrendingDown,
+  IconTrendingUp,
+  IconArrowRight
+} from '@tabler/icons-react'
 interface Props {
   title: string
   logo: string
@@ -15,6 +19,29 @@ interface Props {
 
 export function PriceCard ({ buyPrice, logo, priceRise, priceRisePercentage, sellPrice, title, url, spreed }: Props) {
   const { host } = new URL(url)
+
+  const riseTexts = {
+    up: 'Subió',
+    down: 'Bajó',
+    equal: 'Igual'
+  } as const
+
+  const riseClassess = {
+    up: styles.up,
+    down: styles.down,
+    equal: styles.equal
+  } as const
+
+  const riseIcons = {
+    up: IconTrendingUp,
+    down: IconTrendingDown,
+    equal: IconArrowRight
+  } as const
+
+  const rise = priceRise === null ? 'equal' : priceRise ? 'up' : 'down'
+
+  const Icon = riseIcons[rise]
+
   return (
     <>
       <article className={styles.card}>
@@ -56,6 +83,16 @@ export function PriceCard ({ buyPrice, logo, priceRise, priceRisePercentage, sel
             </li>
         </ul>
         <footer>
+          <p className={`
+            ${riseClassess[rise]}
+            ${styles.rise}
+          `}>
+            <Icon stroke={1} />
+            {
+              riseTexts[rise] + ' ' + priceRisePercentage + '%'
+            }
+          </p>
+          <Button text='Focus' />
         </footer>
       </article>
     </>

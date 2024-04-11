@@ -61,3 +61,30 @@
   font-weight: 500;
   font-size: 14px;
 }
+
+.card footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.rise {
+  margin: 0px;
+  align-items: center;
+  gap: 10px;
+  display: flex;
+  padding: 0px;
+}
+
+.up {
+  color: #00b341;
+}
+
+.down {
+  color: #ff0000;
+}
+
+.equal {
+  color: #000;
+}
