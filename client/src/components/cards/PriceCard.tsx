@@ -1,5 +1,5 @@
-import styles from '@styles/components/cards/PriceCalendar.module.css'
-import { Button } from '../buttons/Button'
+import styles from '@styles/components/cards/PriceCard.module.css'
+import { Button } from '@components/buttons/Button'
 import {
   IconTrendingDown,
   IconTrendingUp,
@@ -15,6 +15,7 @@ interface Props {
   priceRisePercentage: number
   spreed: number
   buttonTitle?: string
+  maxWidth?: string
   buttonAction?: () => void
 }
 
@@ -29,6 +30,7 @@ export function PriceCard (props: Props) {
     url,
     spreed,
     buttonTitle = 'Focus',
+    maxWidth = '350px',
     buttonAction = () => {}
   } = props
 
@@ -58,7 +60,9 @@ export function PriceCard (props: Props) {
 
   return (
     <>
-      <article className={styles.card} aria-label={title}>
+      <article className={styles.card} aria-label={title} style={{
+        maxWidth
+      }}>
         <header>
           <img src={logo} alt={`Logo de ${title}`} />
           <div>
