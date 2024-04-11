@@ -1,12 +1,12 @@
 import { IResponseErrorMessage } from "@test-interfaces/API.d.ts"
 import { asserts } from "@test-dependencies"
+import { STORAGE } from "@test-constants"
+import { GET, parseStorageJSONItem, randomString } from "@test-utils"
 import {
   IPriceAPI,
   IResponsePrice,
   IResponsePrices,
 } from "@test-interfaces/Product.d.ts"
-import { STORAGE } from "@test-constants"
-import { GET, parseStorageJSONItem, randomString } from "@test-utils"
 
 Deno.test("GET / should return 200", async () => {
   const response = await GET("/")
@@ -60,9 +60,10 @@ Deno.test("GET /api/prices should a format json data", async () => {
     const havePriceRisePercentage = Object.hasOwn(price, "priceRisePercentage")
     const haveId = Object.hasOwn(price, "id")
     const haveLogo = Object.hasOwn(price, "logo")
+    const haveUrl = Object.hasOwn(price, "url")
 
     return haveEntity && haveBuyPrice && haveSellPrice && havePriceRise &&
-      havePriceRisePercentage && haveId && haveLogo
+      havePriceRisePercentage && haveId && haveLogo && haveUrl
   })
 
   const isValidValuesPricesProperties = prices.every((price) => {
@@ -76,10 +77,11 @@ Deno.test("GET /api/prices should a format json data", async () => {
     const isIdString = typeof price.id === "string"
     const isLogoString = typeof price.logo === "string"
     const logoIsUrl = new URL(price.logo)
+    const isUrlStringURL = new URL(price.url)
 
     return isEntityString && isBuyPriceNumber && isSellPriceNumber &&
       isPriceRiseBooleanOrNull && isPriceRisePercentageNumber && isIdString &&
-      isLogoString && logoIsUrl
+      isLogoString && logoIsUrl && isUrlStringURL
   })
 
   const isReferenceExtractedPageString =
@@ -122,17 +124,17 @@ Deno.test("GET /api/prices/:id should a return json data", async () => {
   const havePriceRisePercentage = Object.hasOwn(price, "priceRisePercentage")
   const haveId = Object.hasOwn(price, "id")
   const haveLogo = Object.hasOwn(price, "logo")
+  const haveUrl = Object.hasOwn(price, "url")
 
   const isEntityString = typeof price.entity === "string"
   const isBuyPriceNumber = typeof price.buy === "number"
   const isSellPriceNumber = typeof price.sell === "number"
-  const isPriceRiseBooleanOrNull = typeof price.priceRise === "boolean" ||
-    price.priceRise === null
-  const isPriceRisePercentageNumber =
-    typeof price.priceRisePercentage === "number"
+  const isPriceRiseBooleanOrNull = typeof price.priceRise === "boolean" || price.priceRise === null
+  const isPriceRisePercentageNumber = typeof price.priceRisePercentage === "number"
   const isIdString = typeof price.id === "string"
   const isLogoString = typeof price.logo === "string"
   const logoIsUrl = new URL(price.logo)
+  const isUrlStringURL = new URL(price.url)
 
   const isReferenceExtractedPageString =
     typeof referenceExtractedPage === "string"
@@ -145,6 +147,7 @@ Deno.test("GET /api/prices/:id should a return json data", async () => {
   asserts.assert(havePriceRisePercentage, "Have a priceRisePercentage key")
   asserts.assert(haveId, "Have a id key")
   asserts.assert(haveLogo, "Have a logo key")
+  asserts.assert(haveUrl, "Have a url key")
 
   asserts.assert(isEntityString, "Entity is a string")
   asserts.assert(isBuyPriceNumber, "Buy is a number")
@@ -154,6 +157,7 @@ Deno.test("GET /api/prices/:id should a return json data", async () => {
   asserts.assert(isIdString, "Id is a string")
   asserts.assert(isLogoString, "Logo is a string")
   asserts.assert(logoIsUrl, "Logo is a valid url")
+  asserts.assert(isUrlStringURL, "Url is a valid url")
 
   asserts.assert(
     isReferenceExtractedPageString,

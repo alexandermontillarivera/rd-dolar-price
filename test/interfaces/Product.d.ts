@@ -3,6 +3,7 @@ import { IPrice } from "@interfaces/Product.d.ts"
 export interface IPriceAPI extends IPrice {
   id: string
   logo: string
+  url: string
 }
 
 export interface IResponsePrices {
