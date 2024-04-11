@@ -1,6 +1,7 @@
 import { getPrices } from '@services/prices'
 import { useNavigate } from 'react-router-dom'
 import type { IPrice } from '@interfaces/Prices'
+import { useGenerateArrayIds } from '@hooks/useGenerateArrayIds'
 import { useState, useEffect } from 'react'
 
 export const usePricesList = () => {
@@ -11,7 +12,6 @@ export const usePricesList = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    setLoading(true)
     getPrices()
       .then((response) => {
         if (!response.ok) {
@@ -34,10 +34,13 @@ export const usePricesList = () => {
     return () => { navigate(`/prices/${id}`) }
   }
 
+  const arrayLoadingSkeleton = useGenerateArrayIds(16)
+
   return {
     prices,
     loading,
     error,
+    arrayLoadingSkeleton,
     createActionCard
   }
 }
