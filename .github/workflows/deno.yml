@@ -31,16 +31,8 @@ jobs:
         with:
           deno-version: v1.x
 
-      # Uncomment this step to verify the use of 'deno fmt' on each commit.
-      # - name: Verify formatting
-      #   run: deno fmt --check
-
-      - name: Run API server
-        run: deno task dev
-        env:
-          PORT: ${{ secrets.PORT }}
-          PAGE_URL: ${{ secrets.PAGE_URL }}
-          SERVICE_HOST: ${{ secrets.SERVICE_HOST }}
+      - name: Run formatter
+        run: deno fmt
 
       - name: Run linter
         run: deno lint
