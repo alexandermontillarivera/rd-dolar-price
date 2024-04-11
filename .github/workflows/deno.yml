@@ -35,8 +35,20 @@ jobs:
       # - name: Verify formatting
       #   run: deno fmt --check
 
+      - name: Run API server
+        run: deno task dev
+        env:
+          PORT: ${{ secrets.PORT }}
+          PAGE_URL: ${{ secrets.PAGE_URL }}
+          SERVICE_HOST: ${{ secrets.SERVICE_HOST }}
+
       - name: Run linter
         run: deno lint
 
       - name: Run tests
         run: deno test -A
+        env:
+          PORT: ${{ secrets.PORT }}
+          PAGE_URL: ${{ secrets.PAGE_URL }}
+          SERVICE_HOST: ${{ secrets.SERVICE_HOST }}
+
