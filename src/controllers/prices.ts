@@ -1,5 +1,5 @@
 import type { Request, Response } from "npm:@types/express"
-import { ENTITIES_IDS, ENTITIES_IDS_INVERTED } from "@constants"
+import { ENTITIES_IDS, ENTITIES_IDS_INVERTED, ENTITIES_PAGES, URL_SB_SEARCH } from "@constants"
 import { enviroments } from "@config/enviroments.ts"
 import { getPriceByEntity, getPrices } from "@utilities/getPrices.ts"
 
@@ -12,11 +12,13 @@ export const getPricesEntitiesController = async (
 
     const formattedResult = result.map((item) => {
       const id = ENTITIES_IDS[item.entity] ?? item.entity
+      const url = ENTITIES_PAGES[item.entity] ?? `${URL_SB_SEARCH}${item.entity}`
       const logo = `${enviroments.SERVICE_HOST}/images/${id}.png`
       return {
         ...item,
         id,
         logo,
+        url
       }
     })
 
@@ -58,11 +60,14 @@ export const getPriceByEntityController = async (
 
     const logo = `${enviroments.SERVICE_HOST}/images/${entity}.png`
 
+    const url = ENTITIES_PAGES[entityName] ?? `${URL_SB_SEARCH}${entityName}`
+
     return response.status(200).json({
       price: {
         ...result,
         id: entity,
         logo,
+        url
       },
       message: "Price fetched successfully",
       referenceExtractedPage: enviroments.PAGE_URL,
