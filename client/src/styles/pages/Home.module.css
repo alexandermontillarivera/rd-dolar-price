@@ -19,6 +19,16 @@
   animation: float 6s infinite;
 }
 
+.sectionPrices {
+  min-height: 100vh;
+  padding: 0px 50px;
+}
+
+.sectionPrices h2 {
+  text-align: center;
+  font-size: 30px;
+}
+
 @keyframes float {
   0% {
     transform: translateY(0);
