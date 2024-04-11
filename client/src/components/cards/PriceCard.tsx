@@ -13,11 +13,25 @@ interface Props {
   sellPrice: number
   priceRise: boolean | null
   priceRisePercentage: number
-  id: string
   spreed: number
+  buttonTitle?: string
+  buttonAction?: () => void
 }
 
-export function PriceCard ({ buyPrice, logo, priceRise, priceRisePercentage, sellPrice, title, url, spreed }: Props) {
+export function PriceCard (props: Props) {
+  const {
+    buyPrice,
+    logo,
+    priceRise,
+    priceRisePercentage,
+    sellPrice,
+    title,
+    url,
+    spreed,
+    buttonTitle = 'Focus',
+    buttonAction = () => {}
+  } = props
+
   const { host } = new URL(url)
 
   const riseTexts = {
@@ -44,11 +58,11 @@ export function PriceCard ({ buyPrice, logo, priceRise, priceRisePercentage, sel
 
   return (
     <>
-      <article className={styles.card}>
+      <article className={styles.card} aria-label={title}>
         <header>
           <img src={logo} alt={`Logo de ${title}`} />
           <div>
-            <h3>
+            <h3 title={title}>
               {title}
             </h3>
             <a href={url} target='_blank' rel="noreferrer">
@@ -89,10 +103,12 @@ export function PriceCard ({ buyPrice, logo, priceRise, priceRisePercentage, sel
           `}>
             <Icon stroke={1} />
             {
-              riseTexts[rise] + ' ' + priceRisePercentage + '%'
+              riseTexts[rise] + ' ' + (
+                rise === 'equal' ? '' : priceRisePercentage + '%'
+              )
             }
           </p>
-          <Button text='Focus' />
+          <Button text={buttonTitle} onClick={buttonAction} />
         </footer>
       </article>
     </>
