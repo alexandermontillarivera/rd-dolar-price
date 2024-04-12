@@ -1,5 +1,5 @@
 import type { Request, Response } from "npm:@types/express"
-import { ENTITIES_IDS, ENTITIES_IDS_INVERTED, ENTITIES_PAGES, URL_SB_SEARCH } from "@constants"
+import { ENTITIES_IDS, ENTITIES_IDS_INVERTED, ENTITIES_PAGES, URL_SB_SEARCH, STATIC_FILES_PATH } from "@constants"
 import { enviroments } from "@config/enviroments.ts"
 import { getPriceByEntity, getPrices } from "@utilities/getPrices.ts"
 
@@ -13,7 +13,7 @@ export const getPricesEntitiesController = async (
     const formattedResult = result.map((item) => {
       const id = ENTITIES_IDS[item.entity] ?? item.entity
       const url = ENTITIES_PAGES[item.entity] ?? `${URL_SB_SEARCH}${item.entity}`
-      const logo = `${enviroments.SERVICE_HOST}/images/${id}.png`
+      const logo = `${enviroments.SERVICE_HOST}/api/prices/logo/${id}`
       return {
         ...item,
         id,
@@ -58,7 +58,7 @@ export const getPriceByEntityController = async (
       })
     }
 
-    const logo = `${enviroments.SERVICE_HOST}/images/${entity}.png`
+    const logo = `${enviroments.SERVICE_HOST}/api/prices/logo/${entity}`
 
     const url = ENTITIES_PAGES[entityName] ?? `${URL_SB_SEARCH}${entityName}`
 
@@ -78,4 +78,30 @@ export const getPriceByEntityController = async (
       message: "Internal server error",
     })
   }
+}
+
+export const getImageLogoEntity = (req: Request, res: Response) => {
+  const id = req.params.id
+
+  const entity = ENTITIES_IDS_INVERTED[id] ?? null
+
+  if(!entity) {
+    return res.status(404).json({
+      message: "Entity not found"
+    })
+  }
+
+  const path = `${STATIC_FILES_PATH}/images/${id}.png`
+
+
+  try {
+    Deno.statSync(path)
+  } catch (_error) {
+    return res.status(404).json({
+      message: "Not found logo image"
+    })
+  }
+
+  return res.status(200).sendFile(path)    
+
 }
