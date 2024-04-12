@@ -29,6 +29,35 @@
   font-size: 30px;
 }
 
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.errorContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.error img {
+  max-width: 300px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding-left: 50px;
+}
+
+.error p {
+  font-size: 20px;
+  text-align: center;
+  text-wrap: balance;
+}
+
 @keyframes float {
   0% {
     transform: translateY(0);
