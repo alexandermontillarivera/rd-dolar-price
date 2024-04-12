@@ -4,7 +4,8 @@
     "specifiers": {
       "npm:cors": "npm:cors@2.8.5",
       "npm:express": "npm:express@4.19.2",
-      "npm:jsdom": "npm:jsdom@22.0.0"
+      "npm:jsdom": "npm:jsdom@22.0.0",
+      "npm:serve-static": "npm:serve-static@1.15.0"
     },
     "npm": {
       "@tootallnate/once@2.0.0": {
