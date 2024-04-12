@@ -1,0 +1,13 @@
+.skeleton {
+  background-image: linear-gradient(90deg, #e1dede63 0px, rgb(229 229 229 / 90%) 40px, #f0f0f0 80px);
+  background-size: 300%;
+  background-position: 100% 0;
+  border-radius: inherit;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -100% 0;
+  }
+}

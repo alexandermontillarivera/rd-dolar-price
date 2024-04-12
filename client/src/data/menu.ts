@@ -1,6 +1,6 @@
 import type { IMenuItem } from '@contracts/Menu'
-import { useAddIMenuItem } from '@/hooks/useAddIMenuItem'
-import { IconHome, IconLibrary, IconApi } from '@tabler/icons-react'
+import { useAddIMenuItem } from '@hooks/useAddIMenuItem'
+import { IconHome, IconLibrary, IconApi, IconCode } from '@tabler/icons-react'
 
 export const menuHeader: IMenuItem[] = [
   useAddIMenuItem({
@@ -15,7 +15,12 @@ export const menuHeader: IMenuItem[] = [
   }),
   useAddIMenuItem({
     icon: IconApi,
-    path: '/api',
+    path: '/api-documentation',
     text: 'Documentación de API'
+  }),
+  useAddIMenuItem({
+    icon: IconCode,
+    path: '/source-code',
+    text: 'Proyecto'
   })
 ]

@@ -1,30 +1,25 @@
 import styles from '@styles/pages/Home.module.css'
 import { PriceCard } from '@components/cards/PriceCard'
 import { usePricesList } from '@hooks/usePricesList'
-import { Grid } from '@/components/container/Grid'
-import { PriceSkeleton } from '@components/skeleton/PriceSkeleton'
+import { Grid } from '@components/container/Grid'
+import { PriceSkeleton } from '@components/skeletons/PriceSkeleton'
+import { Hero } from '@components/box/Hero'
 
 function HomePage () {
   const { prices, createActionCard, loading, arrayLoadingSkeleton, error } = usePricesList()
 
   return (
     <>
-      <section className={styles.hero} style={{
-        marginBottom: '2rem'
-      }}>
-        <div className={styles.images}>
-          <img src="/dominican-flag.png" alt="Bandera dominicana" width="100px" />
-          <img src="/dollar-symbol.png" alt="Simbolo dolar" width="100px" />
-        </div>
-        <h1>
-          Verifica los precios del dolar cotizado por diferentes
-          entidades financieras en la República Dominicana
-        </h1>
-      </section>
+    <Hero
+      imagesUrls={['/dominican-flag.png', '/dollar-symbol.png']}
+      title='Verifica los precios del dolar cotizado por diferentes entidades financieras en la República Dominicana'
+    />
       <section className={`${styles.sectionPrices} ${error ? styles.errorContent : ''}`}>
-        <h2>
-          {error ? 'Error al cargar los precios' : 'Precios del dolar'}
-        </h2>
+        {
+          <h2 className={`${loading && styles.hiddenTitle}`}>
+            {error ? 'Error al cargar los precios' : 'Precios del dolar'}
+          </h2>
+        }
         {
           (error && !loading) && (
             <div className={styles.error}>
