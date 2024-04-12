@@ -54,7 +54,7 @@ export function PriceCard (props: Props) {
     equal: IconArrowRight
   } as const
 
-  const rise = priceRise === null ? 'equal' : priceRise ? 'up' : 'down'
+  const rise = (priceRise === null || priceRisePercentage === 0) ? 'equal' : priceRise ? 'up' : 'down'
 
   const Icon = riseIcons[rise]
 

@@ -21,10 +21,18 @@ function HomePage () {
           entidades financieras en la República Dominicana
         </h1>
       </section>
-      <section className={styles.sectionPrices}>
+      <section className={`${styles.sectionPrices} ${error ? styles.errorContent : ''}`}>
         <h2>
-          Precios del dolar
+          {error ? 'Error al cargar los precios' : 'Precios del dolar'}
         </h2>
+        {
+          (error && !loading) && (
+            <div className={styles.error}>
+              <img src="/error.png" alt="Error al cargar los servicios" />
+              <p>Hubo un error al cargar los precios, por favor intenta de nuevo más tarde.</p>
+            </div>
+          )
+        }
         <Grid maxGridWidth='1fr' minGridWidth='300px' gap='20px' margin='0px auto' maxWidth='1400px'>
           {loading && arrayLoadingSkeleton.map((id) => (
             <PriceSkeleton key={id} maxWidth='100%' />
@@ -45,7 +53,6 @@ function HomePage () {
               maxWidth='100%'
             />
           ))}
-
         </Grid>
       </section>
 

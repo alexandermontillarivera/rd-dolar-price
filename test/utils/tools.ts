@@ -2,7 +2,7 @@ import { enviroments } from "@config/enviroments.ts"
 import { STORAGE } from "@test-constants"
 
 export const GET = (path: `/${string}`) => {
-  return fetch(`http://localhost:${enviroments.PORT}${path}`, {
+  return fetch(`${enviroments.SERVICE_HOST}${path}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

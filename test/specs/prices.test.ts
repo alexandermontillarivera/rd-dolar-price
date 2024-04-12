@@ -190,3 +190,24 @@ Deno.test("GET /api/prices/:randomId should message data json 404 error", async 
   asserts.assert(haveAMessageKey, "Have a message key")
   asserts.assertEquals(body.message, "Entity not found", "Expected message")
 })
+
+Deno.test("GET /api/prices/logo/:id should return 200", async () => {
+  const item = parseStorageJSONItem<IPriceAPI>("ITEM_PRICE")
+  const response = await GET(`/api/prices/logo/${item.id}`)
+  await response.body?.cancel()
+  asserts.assertEquals(response.status, 200, "Expected status 200")
+})
+
+Deno.test("GET /api/prices/logo/:id should a return image data", async () => {
+  const item = parseStorageJSONItem<IPriceAPI>("ITEM_PRICE")
+  const response = await GET(`/api/prices/logo/${item.id}`)
+  const blob = await response.blob()
+  asserts.assertEquals(response.status, 200, "Expected status 200")
+  asserts.assertEquals(blob.type, "image/png", "Expected image type")
+})
+
+Deno.test("GET /api/prices/logo/:randomId should return 404", async () => {
+  const response = await GET(`/api/prices/logo/random`)
+  await response.body?.cancel()
+  asserts.assertEquals(response.status, 404, "Expected status 404")
+})
