@@ -80,7 +80,7 @@ export const getPriceByEntityController = async (
   }
 }
 
-export const getImageLogoEntity = (req: Request, res: Response) => {
+export const getImageLogoEntityController = async (req: Request, res: Response) => {
   const id = req.params.id
 
   const entity = ENTITIES_IDS_INVERTED[id] ?? null
@@ -101,7 +101,10 @@ export const getImageLogoEntity = (req: Request, res: Response) => {
       message: "Not found logo image"
     })
   }
-
-  return res.status(200).sendFile(path)    
-
+  
+  const fileContent = await Deno.readFile(path)
+  const buffer = new Uint8Array(fileContent)
+  res.setHeader('content-type', 'image/png')
+  res.write(buffer)
+  res.end()
 }
