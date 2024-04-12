@@ -5,6 +5,6 @@ const router = express.Router()
 
 router.get("/", controllers.getPricesEntitiesController)
 router.get("/:entity", controllers.getPriceByEntityController)
-router.get("/logo/:id", controllers.getImageLogoEntity)
+router.get("/logo/:id", controllers.getImageLogoEntityController)
 
 export default router
